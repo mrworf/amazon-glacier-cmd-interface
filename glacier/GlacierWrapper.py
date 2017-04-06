@@ -800,7 +800,7 @@ using %s MB parts to upload." % part_size)
             if not marker:
                 break
 
-        return job_list
+        return sorted(job_list, key=lambda x: x['CompletionDate'], reverse=True)
 
     @glacier_connect
     @log_class_call("Requesting job description.",
@@ -1619,7 +1619,7 @@ your archive ID is correct, and start a retrieval job using \
             # in progress job.
             job_list = self.list_jobs(vault_name)
             inventory_done = False
-            for job in sorted(job_list, key=lambda x: x['CompletionDate'], reverse=True):
+            for job in job_list:
                 if job['Action'] == "InventoryRetrieval":
 
                     # As soon as a finished inventory job is found, we're done.
